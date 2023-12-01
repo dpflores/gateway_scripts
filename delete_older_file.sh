@@ -1,7 +1,7 @@
 #!/bin/bash
-source .env
+
 # Ruta de la carpeta
-carpeta=${CSV_STORAGE_PATH}
+carpeta="/media/mmcblk0p1/csv-data"
 
 # Establecer el valor predeterminado de max_archivos
 max_archivos=16
@@ -15,7 +15,7 @@ fi
 cantidad_archivos=$(find "$carpeta" -maxdepth 1 -type f | wc -l)
 
 # Comprobar si la cantidad de archivos es mayor al valor de max_archivos
-echo "Cantidad de archivos: $cantidad_archivos"
+echo "Cantidad de archivos: $cantidad_archivos" 
 echo "Máximo de archivos: $max_archivos"
 
 if [[ $cantidad_archivos -gt $max_archivos ]]; then
