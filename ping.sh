@@ -17,9 +17,9 @@ fi
 
 # Bucle infinito que ejecuta el ping cada intervalo de tiempo
 while true; do
-    ping -c 1 $server > /dev/null 2>&1
+    ping_result=$(ping -c 1 $server | grep -oP 'time=\K[0-9.]+')
     if [ $? -eq 0 ]; then
-        echo -n "connected"
+        echo -n "$ping_result"
     fi
     sleep "$interval"
 done
