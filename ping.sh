@@ -19,7 +19,7 @@ fi
 while true; do
     ping -c 1 $server > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        echo "1"
+        echo -n "connected"
     fi
     sleep "$interval"
 done
