@@ -55,7 +55,7 @@ if mountpoint -q "$USB_MOUNT_DIR"; then
         fi
     fi
 else
-    echo "Error al montar dispositivo USB. Parpadeando LED rojo durante 3 segundos."
+    echo "Error al montar dispositivo USB. Parpadeando LED rojo durante 5 segundos."
     
     # Parpadear LED rojo durante 5 segundos
     for i in {1..10}; do
