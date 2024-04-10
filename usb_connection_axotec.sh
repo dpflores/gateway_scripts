@@ -57,8 +57,8 @@ if mountpoint -q "$USB_MOUNT_DIR"; then
 else
     echo "Error al montar dispositivo USB. Parpadeando LED rojo durante 3 segundos."
     
-    # Parpadear LED rojo durante 3 segundos
-    for i in {1..6}; do
+    # Parpadear LED rojo durante 5 segundos
+    for i in {1..10}; do
         if [ "$USO_LED_EXTERNO" == true ]; then
             echo 1 > /dev/diod3  # LED externo rojo
         else
