@@ -2,17 +2,18 @@
 
 # Verificar que se proporcionen las rutas como argumentos
 if [ $# -ne 2 ]; then
-    echo "Uso: $0 <directorio_USB> <carpeta_origen>"
+    echo "Uso: $0 <directorio_USB> <carpeta_origen> [uso_led_externo]"
     exit 1
 fi
 
 # Asignar las rutas proporcionadas a variables
 USB_MOUNT_DIR="$1"
 CARPETA_ORIGEN="$2"
+USO_LED_EXTERNO=${3:-false}  # Por defecto, no se utiliza el LED externo
 
 # Encender luz roja y apagar verde
-echo 1 > /dev/diod3
-echo 0 > /dev/diod2
+echo 1 > /dev/usrled3  # Rojo
+echo 0 > /dev/usrled2  # Verde
 
 # Montar dispositivo USB
 sleep 2
@@ -35,20 +36,36 @@ if mountpoint -q "$USB_MOUNT_DIR"; then
     if [ $? -eq 0 ]; then
         echo "Dispositivo USB desmontado correctamente."
         # Encender LED verde
-        echo 1 > /dev/diod2
+        if [ "$USO_LED_EXTERNO" == true ]; then
+            echo 1 > /dev/diod2  # LED externo verde
+        else
+            echo 1 > /dev/usrled2  # LED interno verde
+        fi
     else
         echo "Error al desmontar dispositivo USB. Encendiendo LED rojo."
         # Encender LED rojo
-        echo 1 > /dev/diod3
+        if [ "$USO_LED_EXTERNO" == true ]; then
+            echo 1 > /dev/diod3  # LED externo rojo
+        else
+            echo 1 > /dev/usrled3  # LED interno rojo
+        fi
     fi
 else
     echo "Error al montar dispositivo USB. Parpadeando LED rojo durante 3 segundos."
     
     # Parpadear LED rojo durante 3 segundos
     for i in {1..6}; do
-        echo 1 > /dev/diod3
+        if [ "$USO_LED_EXTERNO" == true ]; then
+            echo 1 > /dev/diod3  # LED externo rojo
+        else
+            echo 1 > /dev/usrled3  # LED interno rojo
+        fi
         sleep 0.5
-        echo 0 > /dev/diod3
+        if [ "$USO_LED_EXTERNO" == true ]; then
+            echo 0 > /dev/diod3
+        else
+            echo 0 > /dev/usrled3
+        fi
         sleep 0.5
     done
 
