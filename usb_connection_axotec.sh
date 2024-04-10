@@ -25,7 +25,7 @@ if mountpoint -q "$USB_MOUNT_DIR"; then
     echo "Dispositivo USB montado correctamente."
     
     # Copiar carpeta al USB
-    sudo cp -r "$CARPETA_ORIGEN"/* "$USB_MOUNT_DIR"/
+    sudo cp -r "$CARPETA_ORIGEN" "$USB_MOUNT_DIR"/
     
     echo "Carpeta copiada al dispositivo USB."
     
@@ -38,16 +38,20 @@ if mountpoint -q "$USB_MOUNT_DIR"; then
         # Encender LED verde
         if [ "$USO_LED_EXTERNO" == true ]; then
             echo 1 > /dev/diod2  # LED externo verde
+            echo 0 > /dev/diod3  # LED externo rojo
         else
             echo 1 > /dev/usrled2  # LED interno verde
+            echo 0 > /dev/usrled3  # LED interno rojo
         fi
     else
         echo "Error al desmontar dispositivo USB. Encendiendo LED rojo."
         # Encender LED rojo
         if [ "$USO_LED_EXTERNO" == true ]; then
+            echo 0 > /dev/diod2  # LED externo verde
             echo 1 > /dev/diod3  # LED externo rojo
         else
             echo 1 > /dev/usrled3  # LED interno rojo
+            echo 0 > /dev/usrled2  # LED interno verde
         fi
     fi
 else
